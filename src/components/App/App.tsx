@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
 import css from './App.module.css';
 import SearchBox from '../SearchBox/SearchBox';
@@ -29,6 +29,7 @@ export default function App() {
           perPage: PER_PAGE,
           search: debouncedSearch || undefined,
         }),
+      placeholderData: keepPreviousData,
     });
 
   const notes = data?.notes ?? [];
