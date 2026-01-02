@@ -13,7 +13,7 @@ export interface CreateNoteProps {
 }
 
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
-const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
+const token = import.meta.env.VITE_TMDB_TOKEN;
 
 export async function fetchNotes(
   page: number,
@@ -27,7 +27,7 @@ export async function fetchNotes(
     },
     headers: {
       accept: 'application/json',
-      Authorization: `Bearer ${NOTEHUB_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -38,7 +38,7 @@ export async function createNote(data: CreateNoteProps) {
   const res = await axios.post<Note>('/notes', data, {
     headers: {
       accept: 'application/json',
-      Authorization: `Bearer ${NOTEHUB_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -49,7 +49,7 @@ export async function deleteNote(id: Note['id']) {
   const { data } = await axios.delete(`/notes/${id}`, {
     headers: {
       accept: 'application/json',
-      Authorization: `Bearer ${NOTEHUB_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
