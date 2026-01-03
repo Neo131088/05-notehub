@@ -17,23 +17,24 @@ export interface FetchNotesParams {
   perPage?: number;
   search?: string;
 }
-
-// базовий URL API
-axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
-
-// береться токен із environment
-const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
-
-if (!NOTEHUB_TOKEN) {
-  throw new Error('NOTEHUB_TOKEN is not defined! Check Vite or Vercel environment variables.');
+export interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
 }
 
-/**
- * Отримання нотаток
- */
+
+axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
+
+
+const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
+if (!NOTEHUB_TOKEN) {
+  throw new Error('NOTEHUB_TOKEN is not defined!');
+}
+
+
 export async function fetchNotes({
-  page,
-  perPage = 12,
+  page = 1,
+  perPage = 10,
   search,
 }: FetchNotesParams): Promise<NotesProps> {
   const { data } = await axios.get<NotesProps>('/notes', {
@@ -51,28 +52,26 @@ export async function fetchNotes({
   return data;
 }
 
-/**
- * Створення нотатки
- */
-export async function createNote(data: CreateNoteProps): Promise<Note> {
-  const { data: note } = await axios.post<Note>('/notes', data, {
+
+export async function createNote(data: CreateNoteProps) {
+  const res = await axios.post<Note>('/notes', data, {
     headers: {
       accept: 'application/json',
       Authorization: `Bearer ${NOTEHUB_TOKEN}`,
     },
   });
 
-  return note;
+  return res.data;
 }
 
-/**
- * Видалення нотатки
- */
-export async function deleteNote(id: Note['id']): Promise<void> {
-  await axios.delete(`/notes/${id}`, {
+
+export async function deleteNote(id: Note['id']) {
+  const { data } = await axios.delete(`/notes/${id}`, {
     headers: {
       accept: 'application/json',
       Authorization: `Bearer ${NOTEHUB_TOKEN}`,
     },
   });
+
+  return data;
 }
