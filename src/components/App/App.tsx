@@ -10,7 +10,7 @@ import NoteForm from '../NoteForm/NoteForm';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { fetchNotes } from '../../services/noteService';
-import type { FetchNotesResponse } from '../../services/noteService';
+import type { FetchNotesResponse } from '../../services/noteService.ts';
 
 
 const PER_PAGE = 12;

@@ -12,18 +12,36 @@ export interface CreateNoteProps {
   tag: string;
 }
 
-axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
-const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
+export interface FetchNotesParams {
+  page: number;
+  perPage?: number;
+  search?: string;
+}
+export interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
 
-export async function fetchNotes(
-  page: number,
-  search: string
-): Promise<NotesProps> {
+
+axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
+
+
+const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
+if (!NOTEHUB_TOKEN) {
+  throw new Error('NOTEHUB_TOKEN is not defined in environment variables');
+}
+
+
+export async function fetchNotes({
+  page,
+  perPage = 12,
+  search,
+}: FetchNotesParams): Promise<NotesProps> {
   const { data } = await axios.get<NotesProps>('/notes', {
     params: {
-      page: `${page}`,
-      perPage: 12,
-      search: `${search}`,
+      page,
+      perPage,
+      search,
     },
     headers: {
       accept: 'application/json',
@@ -33,6 +51,7 @@ export async function fetchNotes(
 
   return data;
 }
+
 
 export async function createNote(data: CreateNoteProps) {
   const res = await axios.post<Note>('/notes', data, {
@@ -44,6 +63,7 @@ export async function createNote(data: CreateNoteProps) {
 
   return res.data;
 }
+
 
 export async function deleteNote(id: Note['id']) {
   const { data } = await axios.delete(`/notes/${id}`, {
