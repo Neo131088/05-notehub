@@ -10,7 +10,7 @@ import NoteForm from '../NoteForm/NoteForm';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { fetchNotes } from '../../services/noteService';
-import type { FetchNotesResponse } from '../../services/noteService.ts';
+import type { NotesProps } from '../../services/noteService.ts';
 
 
 const PER_PAGE = 12;
@@ -21,7 +21,7 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [debouncedSearch] = useDebounce(search, 500);
   const { data, isLoading, isError, isFetching } =
-    useQuery<FetchNotesResponse>({
+    useQuery<NotesProps>({
       queryKey: ['notes', page, debouncedSearch],
       queryFn: () =>
         fetchNotes({
