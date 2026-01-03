@@ -28,7 +28,7 @@ axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 
 const NOTEHUB_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
 if (!NOTEHUB_TOKEN) {
-  throw new Error('NOTEHUB_TOKEN is not defined in environment variables');
+  throw new Error('NOTEHUB_TOKEN is not defined!');
 }
 
 
